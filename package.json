@@ -1,0 +1,33 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node -r dotenv/config index.js",
+    "serve": "nodemon -r dotenv/config index.js",
+    "build": "esbuild index.js --minify --platform=node --outfile=out.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "esbuild": "^0.19.11",
+    "express": "^4.18.2",
+    "helmet": "^6.2.0",
+    "mongoose": "^8.1.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^3.0.3"
+  }
+}
