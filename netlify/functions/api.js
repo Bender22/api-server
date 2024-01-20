@@ -1,4 +1,4 @@
-import './database/mongodb.js'
+import '../../src/database/mongodb.js'
 import express from 'express'
 // import logger from 'morgan'
 // import helmet from 'helmet'
@@ -14,7 +14,7 @@ const app = express()
 
 // app.use(express.json())
 // app.use(express.urlencoded({ extended: true }))
-app.use('/api', eventRouter)
+app.use('/api/', eventRouter)
 // app.use('/api', playerRouter)
 // app.use(errorsHandler)
 
