@@ -1,10 +1,11 @@
 /* eslint-disable camelcase */
-import { Router } from 'express'
+import
+{ Router } from 'express'
 import EventDataModel from '../model/EventDataModel.js'
 
 const router = Router()
 router.post('/event', (req, res) => {
-  const data = req.body
+  const { data } = req.body
 
   Promise.all(data.map(async e => {
     const event = new EventDataModel({
