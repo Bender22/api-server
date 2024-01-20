@@ -4,9 +4,10 @@ const connectionString = 'mongodb+srv://undead:undead@cluster0.vua9dak.mongodb.n
 // const connectionString = 'mongodb://127.0.0.1:27017/data'
 
 // export function mongo () {
-mongoose.connect(connectionString).then(() => {
-  console.log('Connected to Mongodb')
-}).catch(e => {
-  console.error(e)
-}).finally()
+mongoose.connect(connectionString)
+  .then(() => {
+    console.log('Connected to Mongodb')
+  }).catch(e => {
+    console.error(e)
+  }).finally()
 // }
