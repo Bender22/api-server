@@ -7,7 +7,7 @@ const router = Router()
 router.post('/event', (req, res) => {
   const { data } = req.body
 
-  Promise.all(data.map(async e => {
+  Promise.all(data.map(e => {
     const event = new EventDataModel({
       all_damage: e.all_damage,
       all_healing: e.all_healing,
@@ -17,7 +17,7 @@ router.post('/event', (req, res) => {
       name: e.name,
       players: e.player_events
     })
-    return await event.save()
+    return event.save()
   })).then(result => {
     res.send({ updated: true, result })
   }).catch(err => {
