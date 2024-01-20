@@ -9,8 +9,6 @@ router.post('/event', (req, res) => {
 
   Promise.all(data.map(e => {
     const event = new EventDataModel({
-      all_damage: e.all_damage,
-      all_healing: e.all_healing,
       diff: e.diff,
       event_date: e.event_date,
       event_time: e.event_time,
