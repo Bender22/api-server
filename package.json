@@ -5,7 +5,6 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node -r dotenv/config index.js",
     "serve": "nodemon -r dotenv/config index.js",
     "build": "netlify deploy --prod"
   },
