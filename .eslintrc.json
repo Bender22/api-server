@@ -12,6 +12,7 @@
     },
     "rules": {
         "semi": "warn",
-        "spaced-comment": "warn"
+        "spaced-comment": "warn",
+        "no-unused-vars": "warn"
     }
 }
