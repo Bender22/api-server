@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node -r dotenv/config index.js",
     "serve": "nodemon -r dotenv/config index.js",
-    "build": "esbuild index.js --minify --platform=node --outfile=out.js"
+    "build": "netlify deploy --prod"
   },
   "keywords": [],
   "author": "",
