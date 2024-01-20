@@ -50,7 +50,7 @@ router.get('/events', (req, res) => {
   }
   let filterArray = []
   if (filter !== {}) { filterArray = Object.keys(filter).map(clave => ({ [clave]: filter[clave] })) }
-  console.log(filterArray)
+
   EventDataModel.aggregate([
     {
       $match: {
