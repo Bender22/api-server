@@ -34,7 +34,7 @@ router.get('/event/:id', (req, res) => {
 })
 router.get('/events', (req, res) => {
   const filter = {}
-  const { date, diff, zone, name, limit = 10, page = 1, clase } = req.query
+  const { date, diff, zone, boss, limit = 10, page = 1, clase, role, guild, player } = req.query
   const skip = limit * (page - 1)
   if (date) {
     filter.date = Date.parse(date)
@@ -46,19 +46,26 @@ router.get('/events', (req, res) => {
     filter.zone = zone
   }
   if (zone) {
-    filter.name = name
+    filter.bossName = boss
+  }
+  if (clase) {
+    filter.players = { $elemMatch: { 'player_info.class': clase.toUpperCase() } }
+  }
+  if (role) {
+    filter.players = { $elemMatch: { 'player_info.role': role.toUpperCase() } }
+  }
+  if (guild) {
+    filter.players = { $elemMatch: { 'player_info.guild': guild.replace(/\b\w/g, c => c.toUpperCase()) } }
+  }
+  if (player) {
+    filter.players = { $elemMatch: { 'player_info.name': player.replace(/\b\w/g, c => c.toUpperCase()) } }
   }
   let filterArray = []
-  if (filter !== {}) { filterArray = Object.keys(filter).map(clave => ({ [clave]: filter[clave] })) }
-
+  if (filter !== {}) { filterArray = Object.keys(filter).map(clave => ({ [clave]: filter[clave] })).filter(e => !!e) }
+  console.log(filterArray)
   EventDataModel.aggregate([
     {
-      $match: {
-        $and: [
-          { players: { $elemMatch: { 'player_info.class': clase.toUpperCase() } } },
-          ...filterArray
-        ]
-      }
+      $match: {}
     },
     {
       $project: {
@@ -70,7 +77,14 @@ router.get('/events', (req, res) => {
           $filter: {
             input: '$players',
             as: 'player_event',
-            cond: { $eq: ['$$player_event.player_info.class', clase] }
+            cond: {
+              $and: [
+                clase ? { $eq: ['$$player_event.player_info.class', clase.toUpperCase()] } : {},
+                role ? { $eq: ['$$player_event.player_info.role', role.toUpperCase()] } : {},
+                guild ? { $eq: ['$$player_event.player_info.guild', guild.replace(/\b\w/g, c => c.toUpperCase())] } : {},
+                player ? { $eq: ['$$player_event.player_info.name', player.replace(/\b\w/g, c => c.toUpperCase())] } : {}
+              ]
+            }
           }
         }
       }
