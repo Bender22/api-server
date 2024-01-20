@@ -21,7 +21,7 @@ router.post('/event', (req, res) => {
   })).then(result => {
     res.send({ updated: true, result })
   }).catch(err => {
-    res.send({ updated: false, error: err })
+    res.status(400).send({ updated: false, error: err })
   })
 })
 
@@ -32,7 +32,8 @@ router.get('/event/:id', (req, res) => {
   })
 })
 router.get('/events', (req, res) => {
-  EventDataModel.find().then(result => {
+  const { rowsPerPage } = req.body
+  EventDataModel.find({}, {}, { limit: rowsPerPage || 10 }).then(result => {
     res.status(200).json(result)
   }).catch(err => {
     res.status(400).send({ updated: false, error: err })
