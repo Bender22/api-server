@@ -22,7 +22,9 @@
     "helmet": "^6.2.0",
     "mongoose": "^8.1.0",
     "morgan": "^1.10.0",
-    "serverless-http": "^3.2.0"
+    "serverless-http": "^3.2.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
