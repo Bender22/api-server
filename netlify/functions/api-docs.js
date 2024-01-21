@@ -17,5 +17,5 @@ const options = {
 
 const swaggerDocs = swaggerJsDoc(options)
 
-app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 export const handler = serverless(app)
