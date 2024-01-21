@@ -1,7 +1,8 @@
 import swaggerUI from 'swagger-ui-express'
 import swaggerJsDoc from 'swagger-jsdoc'
 import express from 'express'
-
+import serverless from 'serverless-http'
+const app = express()
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -15,5 +16,6 @@ const options = {
 }
 
 const swaggerDocs = swaggerJsDoc(options)
-const app = express()
+
 app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
+export const handler = serverless(app)
