@@ -17,8 +17,8 @@ const options = {
       version: '1.0.0'
     }
   },
-  servers: [{ url: 'http://localhost:4000' }],
-  apis: [`${path.join(__dirname, './routes/*.js')}`]
+  servers: [{ url: 'http://localhost:4000' }]
+  // apis: [`${path.join(__dirname, './routes/*.js')}`]
 }
 
 const swaggerDocs = swaggerJsDoc(options)
