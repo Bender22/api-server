@@ -5,10 +5,10 @@ import helmet from 'helmet'
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
 import eventRouter from './routes/eventRouter.js'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// import * as path from 'path'
+// import { fileURLToPath } from 'url'
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = path.dirname(__filename)
 const options = {
   definition: {
     openapi: '3.0.0',
