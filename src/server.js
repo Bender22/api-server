@@ -20,8 +20,6 @@ const options = {
   // apis: [`${path.join(__dirname, './routes/*.js')}`]
 }
 
-
-
 // import errorsHandler from './middleware/errorsHandler.js'
 // mongo.catch(e => {
 //   console.log(e)
