@@ -35,57 +35,7 @@ router.get('/event/:id', (req, res) => {
       res.status(400).send({ updated: false, error: err })
     })
 })
-/**
- * @swagger
- * /api/events:
- *   get:
- *     description: Obtener todos los eventos
- *     parameters:
- *      - name: date
- *        in: query
- *        description: Fecha del evento
- *        required: false
- *        type: string
- *      - name: diff
- *        in: query
- *        description: Dificultad del evento
- *        required: false
- *        type: string
- *      - name: zone
- *        in: query
- *        description: Zona del evento
- *        required: false
- *        type: string
- *      - name: boss
- *        in: query
- *        description: Boss del evento
- *        required: false
- *        type: string
- *      - name: clase
- *        in: query
- *        description: Clase del player
- *        required: false
- *        type: string
- *      - name: role
- *        in: query
- *        description: Rol del player
- *        required: false
- *        type: string
- *      - name: guild
- *        in: query
- *        description: Guild del player
- *        required: false
- *        type: string
- *      - name: player
- *        in: query
- *        description: Nombre del player
- *        required: false
- *        type: string
- *     responses:
- *       200:
- *         description: Success
- *
- */
+
 router.get('/events', (req, res) => {
   const filter = {}
   const { date, diff, zone, boss, limit = 10, page = 1, clase, role, guild, player } = req.query
