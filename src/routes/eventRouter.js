@@ -49,7 +49,7 @@ router.get('/events', (req, res) => {
   if (zone) {
     filter.zone = zone
   }
-  if (zone) {
+  if (boss) {
     filter.bossName = boss
   }
   if (clase) {
@@ -166,6 +166,17 @@ router.post('/events', (req, res) => {
         event_date: 1,
         event_time: 1,
         name: 1,
+        bossName: {
+          $filter: {
+            input: 'name',
+            as: 'boss_name',
+            cond: {
+              $and: [
+                boss ? { $eq: ['$$boss_name', clase.toUpperCase()] } : {}
+              ]
+            }
+          }
+        },
         players: {
           $filter: {
             input: '$players',

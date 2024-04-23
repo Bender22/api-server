@@ -6,6 +6,7 @@ const EventDataSchema = new Schema({
   event_date: Date,
   event_time: Date,
   name: String,
+  raid_name: String,
   players: []
 })
 
