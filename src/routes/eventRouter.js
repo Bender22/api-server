@@ -112,7 +112,7 @@ router.get('/events', (req, res) => {
               ]
             }
           }
-        },
+        }
       }
     },
     {
