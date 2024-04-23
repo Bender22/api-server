@@ -38,13 +38,13 @@ router.get('/event/:id', (req, res) => {
 
 router.get('/events', (req, res) => {
   const filter = {}
-  const { date, difficult, zone, boss, limit = 10, page = 1, clase, role, guild, player } = req.query
+  const { date, dificult, zone, boss, limit = 10, page = 1, clase, role, guild, player } = req.query
   const skip = limit * (page - 1)
   if (date) {
     filter.date = Date.parse(date)
   }
-  if (difficult) {
-    filter.diff = parseInt(difficult)
+  if (dificult) {
+    filter.diff = parseInt(dificult)
   }
   if (zone) {
     filter.zone = zone
@@ -102,13 +102,13 @@ router.get('/events', (req, res) => {
             }
           }
         },
-        difficult: {
+        dificult: {
           $filter: {
-            input: 'difficult',
-            as: 'difficult',
+            input: 'dificult',
+            as: 'dificult',
             cond: {
               $and: [
-                difficult ? { $eq: ['$$dificult', difficult.toUpperCase()] } : {}
+                dificult ? { $eq: ['$$dificult', dificult.toUpperCase()] } : {}
               ]
             }
           }
