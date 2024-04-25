@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { schema } from 'eslint-plugin-n/lib/util/get-convert-path.js'
+
 const Schema = mongoose.Schema
 
 const EventDataSchema = new Schema({
@@ -9,7 +9,7 @@ const EventDataSchema = new Schema({
   name: String,
   raid_name: String,
   players: [{
-    type: schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'PlayerEvents'
   }]
 })

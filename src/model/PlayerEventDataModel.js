@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { schema } from 'eslint-plugin-n/lib/util/get-convert-path.js'
+
 const Schema = mongoose.Schema
 
 const PlayerEventDataSchema = new Schema({
