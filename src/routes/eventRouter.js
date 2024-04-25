@@ -1,21 +1,53 @@
 /* eslint-disable camelcase */
-import
-{ Router } from 'express'
+import { Router } from 'express'
 import EventDataModel from '../model/EventDataModel.js'
-import mongoose from 'mongoose'
-import PlayerEventDataModel from '../model/PlayerEventDataModel.js'
+import PlayerDataModel from '../model/PlayerDataModel.js'
 
 const router = Router()
 
 // router.use('/api-docs', swaggerUI.serve)
 // router.get('/api-docs', swaggerUI.setup(swaggerDocs))
-router.post('/event', (req, res) => {
+router.post('/event', async (req, res) => {
   const { data } = req.body
-  const { player_events } = data
   if (Array.isArray(data)) {
-    insertArray(data, player_events, req, res)
+    try {
+      // Insertar eventos y obtener promesas
+      const eventPromises = data.map(async e => {
+        const { player_events } = e
+        const players = await Promise.all(insertPlayer(player_events, res))
+        const event = new EventDataModel({
+          diff: e.diff,
+          guid_event: e.guid_event,
+          event_date: e.event_date,
+          event_time: e.event_time,
+          name: e.name,
+          players
+        })
+        return event.save()
+      })
+
+      // Esperar a que todas las promesas se resuelvan
+      const result = await Promise.all(eventPromises)
+
+      // Actualizar los documentos de PlayerDataModel
+      for (const e of result) {
+        for (const ele of e.players) {
+          await PlayerDataModel.findByIdAndUpdate(ele, { $push: { event: e._id } }, { new: false }).exec()
+        }
+      }
+
+      res.send({
+        updated: true,
+        resultado: result
+      })
+    } catch (err) {
+      res.send({
+        updated: false,
+        err
+      })
+    }
   } else if (typeof data === 'object') {
-    insertObject(data, player_events, req, res)
+    // insertObject(data, req, res)
   }
 })
 
@@ -219,7 +251,7 @@ router.post('/events', (req, res) => {
   //   })
 })
 router.get('/event', (req, res) => {
-  EventDataModel.find().populate('PlayerEvents').exec()
+  EventDataModel.find().populate('players').exec()
     .then(result => {
       res.status(200).json(result)
     }).catch(err => {
@@ -227,33 +259,73 @@ router.get('/event', (req, res) => {
     })
 })
 
-const insertArray = (data, player_events, req, res) => {
-  Promise.all(player_events.map(e => {
+// Promise.all(data.map(e => {
+//   const event = new EventDataModel({
+//     diff: e.diff,
+//     event_date: e.event_date,
+//     event_time: e.event_time,
+//     name: e.name,
+//     players: e.player_events
+//   })
+//   return event.save()
+// })).then(async result => {
+//   res.send({
+//     updated: true,
+//     result
+//   })
+//   await mongoose.connection.close()
+// }).catch(err => {
+//   res.status(400).send({
+//     updated: false,
+//     error: err
+//   })
+// })
+
+// const insertObject = (data, req, res) => {
+//   const { player_events } = data
+//   const event = new EventDataModel({
+//     diff: data.diff,
+//     event_date: data.event_date,
+//     event_time: data.event_time,
+//     name: data.name,
+//     players: data.player_events
+//   })
+//   event.save().then(async result => {
+//     res.send({
+//       updated: true,
+//       result
+//     })
+//     await mongoose.connection.close()
+//   }).catch(err => {
+//     res.status(400).send({
+//       updated: false,
+//       error: err
+//     })
+//   })
+// }
+const insertPlayer = (player_events, res) => {
+  return player_events.map(ele => {
     const {
       details,
-      players_info
-    } = e
+      player_info,
+      guid_event
+    } = ele
     const {
       name,
       role,
-      guild,
-      talent,
-      spec
+      guild
+    } = player_info
+    const {
+      damage_taken,
+      damage_done,
+      healing_done,
+      active_time
     } = details
-    const {
-      guid_event,
-      damage_taken,
-      damage_done,
-      healing_done,
-      active_time
-    } = players_info
-    const clase = details.class
-    const event = new PlayerEventDataModel({
+    const clase = player_info.class
+    const playerEvent = new PlayerDataModel({
       role,
       guild,
-      talent,
       clase,
-      spec,
       name,
       guid_event,
       damage_taken,
@@ -261,76 +333,7 @@ const insertArray = (data, player_events, req, res) => {
       healing_done,
       active_time
     })
-    return event.save()
-  })).then(r => {
-    Promise.all(data.map(e => {
-      const listID = r.reduce(ele => {
-        return ele.guid === e.guid
-      })
-      const event = new EventDataModel({
-        diff: e.diff,
-        event_date: e.event_date,
-        event_time: e.event_time,
-        name: e.name,
-        players: listID
-      })
-      return event.save()
-    })).then(async result => {
-      res.send({
-        updated: true,
-        result
-      })
-      await mongoose.connection.close()
-    }).catch(err => {
-      res.status(400).send({
-        updated: false,
-        error: err
-      })
-    })
-  })
-  // Promise.all(data.map(e => {
-  //   const event = new EventDataModel({
-  //     diff: e.diff,
-  //     event_date: e.event_date,
-  //     event_time: e.event_time,
-  //     name: e.name,
-  //     players: e.player_events
-  //   })
-  //   return event.save()
-  // })).then(async result => {
-  //   res.send({
-  //     updated: true,
-  //     result
-  //   })
-  //   await mongoose.connection.close()
-  // }).catch(err => {
-  //   res.status(400).send({
-  //     updated: false,
-  //     error: err
-  //   })
-  // })
-}
-
-const insertObject = (data, player_events, req, res) => {
-  const event = new EventDataModel({
-    diff: data.diff,
-    event_date: data.event_date,
-    event_time: data.event_time,
-    name: data.name,
-    players: data.player_events
-  })
-  event.save().then(async result => {
-    res.send({
-      updated: true,
-      result
-    })
-    await mongoose.connection.close()
-  }).catch(err => {
-    res.status(400).send({
-      updated: false,
-      error: err
-    })
+    return playerEvent.save()
   })
 }
-
 export default router
