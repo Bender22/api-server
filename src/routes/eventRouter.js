@@ -219,7 +219,7 @@ router.post('/events', (req, res) => {
   //   })
 })
 router.get('/event', (req, res) => {
-  EventDataModel.find().exec()
+  EventDataModel.find().populate('PlayerEvents').exec()
     .then(result => {
       res.status(200).json(result)
     }).catch(err => {
