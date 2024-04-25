@@ -265,7 +265,7 @@ const insertArray = (data, player_events, req, res) => {
   })).then(r => {
     Promise.all(data.map(e => {
       const listID = r.reduce(ele => {
-        ele.guid = e.guid
+        return ele.guid === e.guid
       })
       const event = new EventDataModel({
         diff: e.diff,
