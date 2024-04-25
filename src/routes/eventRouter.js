@@ -36,18 +36,38 @@ router.post('/event', async (req, res) => {
         }
       }
 
-      res.send({
+      res.status(200).send({
         updated: true,
         resultado: result
       })
     } catch (err) {
-      res.send({
+      res.status(400).send({
         updated: false,
-        err
+        error: err
       })
     }
   } else if (typeof data === 'object') {
-    // insertObject(data, req, res)
+    try {
+      const { player_events } = data
+      const players = await Promise.all(insertPlayer(player_events, res))
+      const event = new EventDataModel({
+        diff: data.diff,
+        event_date: data.event_date,
+        event_time: data.event_time,
+        name: data.name,
+        players
+      })
+      const result = await event.save()
+      res.status(200).send({
+        updated: true,
+        result
+      })
+    } catch (err) {
+      res.status(400).send({
+        updated: false,
+        error: err
+      })
+    }
   }
 })
 
@@ -281,28 +301,27 @@ router.get('/event', (req, res) => {
 //   })
 // })
 
-// const insertObject = (data, req, res) => {
-//   const { player_events } = data
-//   const event = new EventDataModel({
-//     diff: data.diff,
-//     event_date: data.event_date,
-//     event_time: data.event_time,
-//     name: data.name,
-//     players: data.player_events
-//   })
-//   event.save().then(async result => {
-//     res.send({
-//       updated: true,
-//       result
-//     })
-//     await mongoose.connection.close()
-//   }).catch(err => {
-//     res.status(400).send({
-//       updated: false,
-//       error: err
-//     })
-//   })
-// }
+const insertObject = (data, req, res) => {
+  const { player_events } = data
+  const event = new EventDataModel({
+    diff: data.diff,
+    event_date: data.event_date,
+    event_time: data.event_time,
+    name: data.name,
+    players: data.player_events
+  })
+  event.save().then(async result => {
+    res.send({
+      updated: true,
+      result
+    })
+  }).catch(err => {
+    res.status(400).send({
+      updated: false,
+      error: err
+    })
+  })
+}
 const insertPlayer = (player_events, res) => {
   return player_events.map(ele => {
     const {
