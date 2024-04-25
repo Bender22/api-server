@@ -2,6 +2,8 @@
 import
 { Router } from 'express'
 import EventDataModel from '../model/EventDataModel.js'
+import mongoose from 'mongoose'
+import PlayerEventDataModel from '../model/PlayerEventDataModel.js'
 
 const router = Router()
 
@@ -9,21 +11,12 @@ const router = Router()
 // router.get('/api-docs', swaggerUI.setup(swaggerDocs))
 router.post('/event', (req, res) => {
   const { data } = req.body
-
-  Promise.all(data.map(e => {
-    const event = new EventDataModel({
-      diff: e.diff,
-      event_date: e.event_date,
-      event_time: e.event_time,
-      name: e.name,
-      players: e.player_events
-    })
-    return event.save()
-  })).then(result => {
-    res.send({ updated: true, result })
-  }).catch(err => {
-    res.status(400).send({ updated: false, error: err })
-  })
+  const { player_events } = data
+  if (Array.isArray(data)) {
+    insertArray(data, player_events, req, res)
+  } else if (typeof data === 'object') {
+    insertObject(data, player_events, req, res)
+  }
 })
 
 router.get('/event/:id', (req, res) => {
@@ -233,5 +226,111 @@ router.get('/event', (req, res) => {
       res.status(400).send({ updated: false, error: err })
     })
 })
+
+const insertArray = (data, player_events, req, res) => {
+  Promise.all(player_events.map(e => {
+    const {
+      details,
+      players_info
+    } = e
+    const {
+      name,
+      role,
+      guild,
+      talent,
+      spec
+    } = details
+    const {
+      guid_event,
+      damage_taken,
+      damage_done,
+      healing_done,
+      active_time
+    } = players_info
+    const clase = details.class
+    const event = new PlayerEventDataModel({
+      role,
+      guild,
+      talent,
+      clase,
+      spec,
+      name,
+      guid_event,
+      damage_taken,
+      damage_done,
+      healing_done,
+      active_time
+    })
+    return event.save()
+  })).then(r => {
+    Promise.all(data.map(e => {
+      const listID = r.reduce(ele => {
+        ele.guid = e.guid
+      })
+      const event = new EventDataModel({
+        diff: e.diff,
+        event_date: e.event_date,
+        event_time: e.event_time,
+        name: e.name,
+        players: listID
+      })
+      return event.save()
+    })).then(async result => {
+      res.send({
+        updated: true,
+        result
+      })
+      await mongoose.connection.close()
+    }).catch(err => {
+      res.status(400).send({
+        updated: false,
+        error: err
+      })
+    })
+  })
+  // Promise.all(data.map(e => {
+  //   const event = new EventDataModel({
+  //     diff: e.diff,
+  //     event_date: e.event_date,
+  //     event_time: e.event_time,
+  //     name: e.name,
+  //     players: e.player_events
+  //   })
+  //   return event.save()
+  // })).then(async result => {
+  //   res.send({
+  //     updated: true,
+  //     result
+  //   })
+  //   await mongoose.connection.close()
+  // }).catch(err => {
+  //   res.status(400).send({
+  //     updated: false,
+  //     error: err
+  //   })
+  // })
+}
+
+const insertObject = (data, player_events, req, res) => {
+  const event = new EventDataModel({
+    diff: data.diff,
+    event_date: data.event_date,
+    event_time: data.event_time,
+    name: data.name,
+    players: data.player_events
+  })
+  event.save().then(async result => {
+    res.send({
+      updated: true,
+      result
+    })
+    await mongoose.connection.close()
+  }).catch(err => {
+    res.status(400).send({
+      updated: false,
+      error: err
+    })
+  })
+}
 
 export default router
