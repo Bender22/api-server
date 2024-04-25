@@ -90,28 +90,6 @@ router.get('/events', (req, res) => {
               ]
             }
           }
-        },
-        bossName: {
-          $filter: {
-            input: 'name',
-            as: 'boss_name',
-            cond: {
-              $and: [
-                boss ? { $eq: ['$$boss_name', boss.toUpperCase()] } : {}
-              ]
-            }
-          }
-        },
-        dificult: {
-          $filter: {
-            input: 'dificult',
-            as: 'dificult',
-            cond: {
-              $and: [
-                dificult ? { $eq: ['$$dificult', dificult.toUpperCase()] } : {}
-              ]
-            }
-          }
         }
       }
     },
