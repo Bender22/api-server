@@ -4,6 +4,7 @@ import logger from 'morgan'
 import helmet from 'helmet'
 import eventRouter from '../../src/routes/eventRouter.js'
 import serverless from 'serverless-http'
+import cors from 'cors'
 
 // import errorsHandler from './middleware/errorsHandler.js'
 // mongo.catch(e => {
@@ -11,8 +12,10 @@ import serverless from 'serverless-http'
 // }).finally()
 
 const app = express()
-
-// app.use(helmet())
+app.use(cors({
+  origin: '*'
+}))
+app.use(helmet())
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
