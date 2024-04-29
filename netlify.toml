@@ -11,3 +11,7 @@
   from = "/api-docs/*"
   status = 200
   to = "/.netlify/functions/api-docs/:splat"
+[[headers]]
+for = “/api/*"
+[headers.values]
+Access-Control-Allow-Origin = "http://loclhost:3000"
