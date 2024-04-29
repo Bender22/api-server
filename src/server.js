@@ -25,10 +25,11 @@ const options = {
 //   console.log(e)
 // }).finally()
 const corsOptions = {
-  origin: ['http://localhost:3000']
+  origin: ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }
 const app = express()
-app.use(cors(corsOptions))
+app.use(cors())
 // app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(logger('dev'))
 app.use(express.json())
