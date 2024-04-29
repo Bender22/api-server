@@ -25,9 +25,9 @@ const options = {
 //   console.log(e)
 // }).finally()
 const app = express()
-app.use(cors({
-  origin: '*'
-}))
+// app.use(cors({
+//   origin: '*'
+// }))
 // app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(logger('dev'))
 app.use(express.json())
