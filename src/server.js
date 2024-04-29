@@ -26,7 +26,7 @@ const options = {
 // }).finally()
 const app = express()
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: '*'
 }))
 app.use(helmet({ crossOriginResourcePolicy: false }))
 app.use(logger('dev'))
