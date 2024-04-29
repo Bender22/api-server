@@ -12,9 +12,7 @@ import cors from 'cors'
 // }).finally()
 
 const app = express()
-app.use(cors({
-  origin: '*'
-}))
+app.use(cors())
 app.use(helmet({
   crossOriginResourcePolicy: false
 }))
