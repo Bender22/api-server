@@ -28,7 +28,7 @@ const app = express()
 app.use(cors({
   origin: '*'
 }))
-app.use(helmet({ crossOriginResourcePolicy: false }))
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
