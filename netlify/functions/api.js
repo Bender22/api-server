@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import eventRouter from '../../src/routes/eventRouter.js'
 import serverless from 'serverless-http'
 import cors from 'cors'
+import * as path from 'node:path'
 
 // import errorsHandler from './middleware/errorsHandler.js'
 // mongo.catch(e => {
@@ -20,9 +21,13 @@ app.use(cors())
 //   crossOriginResourcePolicy: false
 // }))
 // app.use(logger('dev'))
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
+app.use(express.static(path.join(__dirname, 'public')))
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 app.use('/api/', eventRouter)
 // app.use(errorsHandler)
 
