@@ -2,7 +2,7 @@ import './database/mongodb.js'
 import express from 'express'
 import logger from 'morgan'
 import helmet from 'helmet'
-
+import cors from 'cors'
 import eventRouter from './routes/eventRouter.js'
 // import * as path from 'path'
 // import { fileURLToPath } from 'url'
@@ -25,6 +25,9 @@ const options = {
 //   console.log(e)
 // }).finally()
 const app = express()
+app.use(cors({
+  origin: 'http://localhost:4000'
+}))
 app.use(helmet())
 app.use(logger('dev'))
 app.use(express.json())
