@@ -16,4 +16,4 @@
   force = true
   from = "/*"
   status = 200
-  to = "/.netlify/functions/static/"
+  to = "/.netlify/functions/static/:splat"
