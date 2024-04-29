@@ -14,4 +14,4 @@
 [[headers]]
 for = “/api/*"
 [headers.values]
-Access-Control-Allow-Origin = "http://loclhost:3000"
+Access-Control-Allow-Origin = *
