@@ -2,14 +2,13 @@ import '../../src/database/mongodb.js'
 import express from 'express'
 import serverless from 'serverless-http'
 import * as path from 'path'
-import { fileURLToPath } from 'url'
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// import { fileURLToPath } from 'url'
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = path.dirname(__filename)
 const app = express()
-console.log(__dirname)
-app.use(express.static(__dirname))
+app.use(express.static('/.netlify/public/'))
 app.get('/', (req, res) => {
-  res.sendFile(__dirname)
+  res.sendFile('/.netlify/src/public/index.html')
 })
 
 export const handler = serverless(app)
