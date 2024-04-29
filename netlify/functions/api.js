@@ -12,7 +12,7 @@ import serverless from 'serverless-http'
 
 const app = express()
 
-app.use(helmet())
+// app.use(helmet())
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
