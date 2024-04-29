@@ -5,7 +5,7 @@ import helmet from 'helmet'
 import cors from 'cors'
 import eventRouter from './routes/eventRouter.js'
 
-import * as path from 'path'
+import path from 'path'
 import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -35,9 +35,9 @@ app.use(cors())
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(process.cwd(), 'public')))
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'))
+  res.sendFile(path.join(process.cwd(), 'public', 'index.html'))
 })
 app.use('/api', eventRouter)
 
