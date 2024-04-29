@@ -16,4 +16,4 @@
   force = true
   from = "/*"
   status = 200
-  to = "/"
+  to = "/.netlify/functions/static/"
