@@ -5,10 +5,10 @@ import helmet from 'helmet'
 import eventRouter from '../../src/routes/eventRouter.js'
 import serverless from 'serverless-http'
 import cors from 'cors'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// import * as path from 'path'
+// import { fileURLToPath } from 'url'
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = path.dirname(__filename)
 
 // import errorsHandler from './middleware/errorsHandler.js'
 // mongo.catch(e => {
@@ -27,10 +27,10 @@ app.use(cors())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname, 'public')))
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
+// app.use(express.static(path.join(__dirname, 'public')))
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'))
+// })
 app.use('/api/', eventRouter)
 // app.use(errorsHandler)
 
