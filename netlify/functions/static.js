@@ -6,9 +6,9 @@ import * as path from 'path'
 // const __filename = fileURLToPath(import.meta.url)
 // const __dirname = path.dirname(__filename)
 const app = express()
-app.use(express.static('/public/'))
+app.use(express.static('src/public/'))
 app.get('/', (req, res) => {
-  res.sendFile('/public/index.html')
+  res.sendFile('/src/public/index.html')
 })
 
 export const handler = serverless(app)
