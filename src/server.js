@@ -35,9 +35,9 @@ app.use(cors())
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(path.join(process.cwd(), 'public')))
+app.use(express.static(path.join(process.cwd(), 'dist')))
 app.get('/', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'index.html'))
+  res.sendFile(path.join(process.cwd(), 'dist', 'index.html'))
 })
 app.use('/api', eventRouter)
 
