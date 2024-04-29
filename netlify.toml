@@ -12,8 +12,8 @@
   from = "/api-docs/*"
   status = 200
   to = "/.netlify/functions/api-docs/:splat"
-  [[redirects]]
-    force = true
-    from = "/*"
-    status = 200
-    to = "/.netlify/functions/static/:splat"
+[[redirects]]
+  force = true
+  from = "/*"
+  status = 200
+  to = "/"
