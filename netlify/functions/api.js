@@ -10,9 +10,11 @@ import cors from 'cors'
 // mongo.catch(e => {
 //   console.log(e)
 // }).finally()
-
+const corsOptions = {
+  origin: ['http://localhost:3000']
+}
 const app = express()
-app.use(cors())
+app.use(cors(corsOptions))
 // app.use(helmet({
 //   crossOriginResourcePolicy: false
 // }))
