@@ -15,7 +15,7 @@ import cors from 'cors'
 //   console.log(e)
 // }).finally()
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://usdamage.netlify.app'],
+  origin: ['http://localhost:3000', 'https://usdamage.netlify.app', 'https://undeadsheep.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }
 const app = express()
